@@ -48,3 +48,17 @@ def get_int_cidr(mask):
 assert get_int_cidr('240.0.0.0')==4
 assert get_int_cidr('255.0.0.0')==8
 assert get_int_cidr('255.255.255.0')==24
+
+
+def get_network_address(ip_cidr):
+    """
+    paramètre : ip_cidr une addresse ip décimale pointée avec son cidr exemple 192.168.1.40/24
+    Retourne, sous forme d'adresse IP pointée, l'adresse du réseau
+    """
+    ensemble = ip_cidr.split('/')
+    ip = ensemble[0]
+    cidr = ensemble[1]
+    mask = get_pointed_mask(cidr)
+    return mask&ip
+
+assert get_network_address('192.168.1.40/13') == '192.168.0.0'
