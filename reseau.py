@@ -27,12 +27,24 @@ def get_pointed_mask(cidr):
     """
     retourne le masque sous forme d'une ip décimale pointée. Si le CIDR n'est pas conforme, retourne une string vide.
     """
-    bin = 0
-    compteur = cidr
-    binaire = cidr*'1'+(32-cidr)*'0'
-    nombre_dec = int(binaire,2)
-    return get_pointed_ip(nombre_dec)
+    return get_pointed_ip(int(cidr*'1'+(32-cidr)*'0',2))
 
 assert(get_pointed_mask(4)=='240.0.0.0')
 assert(get_pointed_mask(8)=='255.0.0.0')
 assert(get_pointed_mask(24)=='255.255.255.0')
+
+
+def get_int_cidr(mask):
+    """
+    retourne le cidr correspondant au masque sous forme déciamle pointée
+    """
+    compteur = 0
+    binaire = bin(get_int_ip(mask))[2:]
+    for nb in binaire :
+        if nb == '1':
+            compteur += 1
+    return compteur
+
+assert get_int_cidr('240.0.0.0')==4
+assert get_int_cidr('255.0.0.0')==8
+assert get_int_cidr('255.255.255.0')==24
