@@ -86,3 +86,30 @@ def get_nb_hosts(pointed_mask):
     return get_nb_ip(pointed_mask)-2
     
 assert   get_nb_hosts('255.255.0.0') == 65534
+
+
+
+
+def get_summary(ip_cidr):
+    """
+    Retourne un résumé
+    >>> get_summary('192.168.1.20/21')
+
+    Adresse IP : 192.168.1.20/21
+    Masque de sous-réseau : 255.255.248.0
+    Adresse réseau : 192.168.0.0
+    Adresse de broadcast : 192.168.7.255
+    Nombre d'hôtes possibles : 2046
+    Première machine : 192.168.0.1
+    Dernière machine : 192.168.7.254
+    """
+    ensemble = ip_cidr.split('/')
+    print(f"Adresse IP : {ip_cidr}")
+    print(f"Masque de sous-réseau : {get_pointed_mask(int(ensemble[1]))}")
+    print(f"Adresse réseau : {get_network_address(ip_cidr)}")
+    print(f"Adresse de broadcast : {get_pointed_ip(get_int_ip(get_network_address(ip_cidr))+get_nb_hosts(get_pointed_mask(int(ensemble[1])))+1)}")
+    print(f"Nombre d'hôtes possibles : {get_nb_hosts(get_pointed_mask(int(ensemble[1])))}")
+    print(f"Première machine : {get_pointed_ip(get_int_ip(get_network_address(ip_cidr))+1)}")
+    print(f"Dernière machine : {get_pointed_ip(get_int_ip(get_network_address(ip_cidr))+get_nb_hosts(get_pointed_mask(int(ensemble[1]))))}")
+    
+print(get_summary('192.168.1.20/21'))
