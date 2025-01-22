@@ -58,7 +58,31 @@ def get_network_address(ip_cidr):
     ensemble = ip_cidr.split('/')
     ip = ensemble[0]
     cidr = ensemble[1]
-    mask = get_pointed_mask(cidr)
-    return mask&ip
+    mask = get_pointed_mask(int(cidr))
+
+    return get_pointed_ip(get_int_ip(ip)&get_int_ip(mask))
 
 assert get_network_address('192.168.1.40/13') == '192.168.0.0'
+
+
+def get_nb_ip(pointed_mask):
+    """
+    pointed_mask : le masque sous forme d'une adresse ip décimale pointée
+    retourne le nombre d'adresses ip possibles
+    """
+    cidr = get_int_cidr(pointed_mask)
+    n = 32-int(cidr)
+    return 2**n
+
+
+assert   get_nb_ip('255.255.0.0') == 65536  
+
+
+def get_nb_hosts(pointed_mask):
+    """
+    pointed_mask : le masque sous forme d'une adresse ip décimale pointée
+    retourne le nombre d'hôtes possibles
+    """
+    return get_nb_ip(pointed_mask)-2
+    
+assert   get_nb_hosts('255.255.0.0') == 65534
